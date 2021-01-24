@@ -45,8 +45,8 @@
         </div>
 
         <div class="row center">
-            <div class="col-sm-6 team select" style="background-image: url('res/img/teamA.png');" id="teamA" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectTeam(this)"></div>
-            <div class="col-sm-6 team" id="teamB" style="background-image: url('res/img/teamB.png');" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectTeam(this)"></div>
+            <div class="col-sm-6 team select" style="background-image: url('res/img/teamA.png'); background-size: 40%;" id="teamA" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectTeam(this)"></div>
+            <div class="col-sm-6 team" id="teamB" style="background-image: url('res/img/teamB.png'); background-size: 40%;" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectTeam(this)"></div>
         </div>
 
         <div class="text-center p-2 my-2">
@@ -77,6 +77,11 @@
 
                     <div class="offset-4 col-4 py-1 border btn btn-success" data-event="Ro">Rotate</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="alert alert-secondary text-center" id="ballHistory">
             </div>
         </div>
     </div>

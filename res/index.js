@@ -1,3 +1,9 @@
+// Link footer to GitHub
+document.querySelector('#footer').addEventListener('click', event => {
+    window.open('https://github.com/mochatek', '_blank')
+})
+
+
 // DOM element reference
 const personName = document.querySelector('#personName')
 const teamA = document.querySelector('#teamA')
@@ -5,6 +11,7 @@ const teamB = document.querySelector('#teamB')
 const scoreboard = document.querySelector('#scoreboard')
 const matchDetails = document.querySelector('#matchDetails')
 const events = document.querySelector('#events')
+const ballHistory = document.querySelector('#ballHistory')
 
 const modal = new bootstrap.Modal(document.querySelector('#modal'), {
     backdrop: 'static',
@@ -167,6 +174,9 @@ class Cricket {
 
     // Set opening batsmen and bowler
     async initializeInnings() {
+        // Reset ball history
+        ballHistory.innerHTML = ''
+
         await this.setStriker()
         await this.setNonStriker()
         await this.setBowler()
@@ -324,6 +334,14 @@ class Cricket {
         event = isNaN(+event)? event: +event // Convert runs to numbers
 
         this.bowler.throwBall(event) // Ball must be thrown for every event
+
+        // Last 10 balls history
+        if(ballHistory.childElementCount == 10) {
+            ballHistory.firstElementChild.remove()
+        }
+        ballHistory.insertAdjacentHTML('beforeend', `
+        <span class="badge bg-secondary">${event}</span>
+        `)
 
         // In case we need to rotate strike
         if(event == 'Ro') {
@@ -706,12 +724,12 @@ function setAndOpenModal(message, options) {
 
     // If options is a list
     if(typeof(options) != 'string') {
+        html = '<div class="list-group">'
         options.forEach(option => {
-            html += `<div class="form-check">
-                <input class="form-check-input" type="radio" name="options" id="${option}" value="${option}">
-                <label class="form-check-label" for="${option}">${option}</label>
-            </div>`
+            html += `<input type="radio" name="options"  id="${option}" value="${option}"/>
+            <label class="list-group-item" for="${option}">${option}</label>`
         })
+        html += '</div>'
 
     // If option is string, ie, game status messages
     } else {
