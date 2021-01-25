@@ -49,11 +49,17 @@
             <div class="col-sm-6 team" id="teamB" style="background-image: url('res/img/teamB.png'); background-size: 40%;" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="selectTeam(this)"></div>
         </div>
 
+        <div class="row center text-center mt-2">
+            <label for="totalOvers" class="form-label"><span class="badge bg-primary">Total Overs: <span id="overs">4</span></span></label>
+            <input type="range" name="totalOvers" id="totalOvers" class="form-range" min="1" max="100" value="4" onchange="setTotalOvers(this.value)">
+        </div>
+
         <div class="text-center p-2 my-2">
             <button class="btn btn-secondary" onclick="toss('teamA')">🏏 Team A</button>
             <button class="btn btn-success" onclick="toss()">Toss</button>
             <button class="btn btn-secondary" onclick="toss('teamB')">🏏 Team B</button>
         </div>
+
     </div>
 
     <div id="scoreboard" class="row center">

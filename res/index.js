@@ -12,6 +12,8 @@ const scoreboard = document.querySelector('#scoreboard')
 const matchDetails = document.querySelector('#matchDetails')
 const events = document.querySelector('#events')
 const ballHistory = document.querySelector('#ballHistory')
+const totalOvers = document.querySelector('#totalOvers')
+const overs = document.querySelector('#overs')
 
 const modal = new bootstrap.Modal(document.querySelector('#modal'), {
     backdrop: 'static',
@@ -129,6 +131,7 @@ class Cricket {
         this.striker = null
         this.nonStriker = null
         this.bowler = null
+        this.totalOvers = +totalOvers.value // Total overs for the match
     }
 
 
@@ -428,7 +431,7 @@ class Cricket {
         }
 
         // If overs completed
-        if(this.battingTeam.overs == 24) {
+        if(this.battingTeam.overs == this.totalOvers * 6) {
 
             // If it was first batting team
             if(this.battingTeam.order == 'bat') {
@@ -617,7 +620,7 @@ function createTab(battingTeam, bowlingTeam) {
         <p class="alert alert-warning p-1 text-center fw-bolder">Total: &nbsp;
             <span id="${battingTeam.id}-total" class="text-primary">0</span>
             / <span id="${battingTeam.id}-wickets" class="text-danger">0</span>
-            &nbsp;Overs: <span id="${battingTeam.id}-overs" class="text-success">0.0</span>&nbsp;(4)
+            &nbsp;Overs: <span id="${battingTeam.id}-overs" class="text-success">0.0</span>&nbsp;(${match.totalOvers})
         </p>`
 
     return tabContent
@@ -665,6 +668,12 @@ function sendEvent(event) {
     if(element.hasAttribute('data-event')) {
         match.handleEvent(element.getAttribute('data-event')) // send event to match handler
     }
+}
+
+
+// Set total overs in DOM
+function setTotalOvers(value) {
+    overs.innerText = value
 }
 
 

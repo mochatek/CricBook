@@ -17,8 +17,6 @@
 .footer {
     font-family: monospace;
     font-size: small;
-    position: relative;
-    bottom: 0;
 }
 
 tr.border-danger, tr.border-warning, tr.border-success {
