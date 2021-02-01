@@ -72,7 +72,7 @@ class Player {
         } else if(event == 'W') { //Wicket
             this.bowl.overs += 1
             this.bowl.wickets += 1
-            this.bowl.runs + extraRuns
+            this.bowl.runs += extraRuns
 
         } else if([0, 1, 2, 3, 4].includes(event)) { // Hit for runs
             this.bowl.overs += 1
@@ -87,9 +87,13 @@ class Player {
     }
 
 
-    // Batting
-    hitBall(event) {
-        this.bat.balls += 1 // Balls faced
+    // Batting [countBall = false if Wd,W,N]
+    hitBall(event, countBall=true) {
+
+        // Update faced ball only if specified
+        if(countBall) {
+            this.bat.balls += 1
+        }
 
         if(event == 'W') { // Wicket
             this.bat.out = true
@@ -364,18 +368,18 @@ class Cricket {
 
                 // If striker was out
                 if(wicket == this.striker.name) {
-                    this.striker.hitBall('W') // Let him out
+                    this.striker.hitBall('W', false) // Let him out
                     await this.setStriker() // Get new player to strike
 
                 // If non-striker was out
                 } else if(wicket == this.nonStriker.name) {
-                    this.nonStriker.hitBall('W') // Let him out
+                    this.nonStriker.hitBall('W', false) // Let him out
                     await this.setNonStriker() // Get new player to non-strike
                 }
 
             // If it was one-man batting, then batting team is all out
             } else {
-                this.striker.hitBall('W')
+                this.striker.hitBall('W', false)
 
                 // Deactivate striker in DOM
                 const row = document.querySelector(`#${this.striker.name}-bat`)
@@ -422,7 +426,7 @@ class Cricket {
             if(runs) {
 
                 // Add runs to striker and rotate striker if odd score
-                this.striker.hitBall(runs)
+                this.striker.hitBall(runs, false)
                 if(runs % 2 == 1) {
                     this.rotate()
                 }
