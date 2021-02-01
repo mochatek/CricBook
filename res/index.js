@@ -338,14 +338,6 @@ class Cricket {
 
         this.bowler.throwBall(event) // Ball must be thrown for every event
 
-        // Last 10 balls history
-        if(ballHistory.childElementCount == 10) {
-            ballHistory.firstElementChild.remove()
-        }
-        ballHistory.insertAdjacentHTML('beforeend', `
-        <span class="badge bg-secondary">${event}</span>
-        `)
-
         // In case we need to rotate strike
         if(event == 'Ro') {
             match.rotate()
@@ -359,7 +351,12 @@ class Cricket {
             // If it was run out, then get the runs made and update the scores
             const runs = +await getPrompt('Runs made if Run-Out ?', [0, 1, 2, 3])
             this.battingTeam.total += runs
-            this.striker.bat.runs += runs
+            this.striker.hitBall(runs)
+
+            // Show additional runs made in history, if any
+            if(runs) {
+                event = `${event}+${runs}`
+            }
 
             // If it is not one-man batting
             if(this.nonStriker) {
@@ -414,7 +411,21 @@ class Cricket {
 
         // In case it was wide or no ball, award extras
         } else if(event != 'Re') {
-            this.battingTeam.total += 1
+
+            // Additional runs made in that ball
+            const extraRuns = +await getPrompt('Additional runs made ?', [0, 1, 2, 3, 4])
+            if(extraRuns) {
+
+                // Add runs to striker and rotate striker if odd score
+                this.striker.hitBall(extraRuns)
+                if(extraRuns % 2 == 1) {
+                    this.rotate()
+                }
+
+                // Update additional runs in event history
+                event = `${event}+${extraRuns}`
+            }
+            this.battingTeam.total += 1 + extraRuns
         }
 
         // Update score summary of the batting team
@@ -423,6 +434,13 @@ class Cricket {
         team['wickets'].innerText = this.battingTeam.wickets
         team['overs'].innerText = `${Math.floor(this.battingTeam.overs / 6)}.${this.battingTeam.overs % 6}`
 
+        // Last 10 balls event history
+        if(ballHistory.childElementCount == 10) {
+            ballHistory.firstElementChild.remove()
+        }
+        ballHistory.insertAdjacentHTML('beforeend', `
+        <span class="badge bg-secondary">${event}</span>
+        `)
 
         // Check if batting team chased down the target
         if(this.battingTeam.total > this.bowlingTeam.total && this.battingTeam.order == 'chase') {
