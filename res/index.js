@@ -64,14 +64,15 @@ class Player {
     }
 
 
-    // Bowling
-    throwBall(event) {
+    // Bowling [extraRuns in case of Wd,N,W]
+    throwBall(event, extraRuns=0) {
         if(['Wd', 'N'].includes(event)) { // Extras
-            this.bowl.runs += 1
+            this.bowl.runs += 1 + extraRuns
 
         } else if(event == 'W') { //Wicket
             this.bowl.overs += 1
             this.bowl.wickets += 1
+            this.bowl.runs + extraRuns
 
         } else if([0, 1, 2, 3, 4].includes(event)) { // Hit for runs
             this.bowl.overs += 1
@@ -336,8 +337,6 @@ class Cricket {
 
         event = isNaN(+event)? event: +event // Convert runs to numbers
 
-        this.bowler.throwBall(event) // Ball must be thrown for every event
-
         // In case we need to rotate strike
         if(event == 'Ro') {
             match.rotate()
@@ -352,8 +351,9 @@ class Cricket {
             const runs = +await getPrompt('Runs made if Run-Out ?', [0, 1, 2, 3])
             this.battingTeam.total += runs
             this.striker.hitBall(runs)
+            this.bowler.throwBall(event, runs)
 
-            // Show additional runs made in history, if any
+            // Show additional runs made in history and add runs to bowler, if any
             if(runs) {
                 event = `${event}+${runs}`
             }
@@ -401,6 +401,7 @@ class Cricket {
         // In case runs was scored
         } else if(!['N', 'Wd', 'Re'].includes(event)) {
             this.striker.hitBall(event)
+            this.bowler.throwBall(event)
 
             this.battingTeam.total += event
             this.battingTeam.overs += 1
@@ -413,19 +414,23 @@ class Cricket {
         } else if(event != 'Re') {
 
             // Additional runs made in that ball
-            const extraRuns = +await getPrompt('Additional runs made ?', [0, 1, 2, 3, 4])
-            if(extraRuns) {
+            const runs = +await getPrompt('Additional runs made ?', [0, 1, 2, 3, 4])
+
+            // Add ball and runs to bowler
+            this.bowler.throwBall(event, runs)
+
+            if(runs) {
 
                 // Add runs to striker and rotate striker if odd score
-                this.striker.hitBall(extraRuns)
-                if(extraRuns % 2 == 1) {
+                this.striker.hitBall(runs)
+                if(runs % 2 == 1) {
                     this.rotate()
                 }
 
                 // Update additional runs in event history
-                event = `${event}+${extraRuns}`
+                event = `${event}+${runs}`
             }
-            this.battingTeam.total += 1 + extraRuns
+            this.battingTeam.total += 1 + runs
         }
 
         // Update score summary of the batting team
