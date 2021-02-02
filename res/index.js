@@ -425,8 +425,12 @@ class Cricket {
 
             if(runs) {
 
-                // Add runs to striker and rotate striker if odd score
-                this.striker.hitBall(runs, false)
+                // Add runs to striker if N
+                if(event == 'N') {
+                    this.striker.hitBall(runs, false)
+                }
+
+                // Rotate strike if odd run
                 if(runs % 2 == 1) {
                     this.rotate()
                 }
