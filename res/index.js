@@ -54,6 +54,7 @@ class Player {
             runs: 0,
             balls: 0,
             fours: 0,
+            sixes: 0,
             out: false
         }
         this.bowl = {
@@ -74,7 +75,7 @@ class Player {
             this.bowl.wickets += 1
             this.bowl.runs += extraRuns
 
-        } else if([0, 1, 2, 3, 4].includes(event)) { // Hit for runs
+        } else { // Hit for runs
             this.bowl.overs += 1
             this.bowl.runs += event
         }
@@ -103,6 +104,8 @@ class Player {
 
             if(event == 4) { // Boundary count
                 this.bat.fours += 1
+            } else if(event == 6) {
+                this.bat.sixes += 1
             }
         }
 
@@ -110,7 +113,7 @@ class Player {
         const row = document.querySelector(`#${this.name}-bat`).children
         row[1].innerText = this.bat.runs
         row[2].innerText = this.bat.balls
-        row[3].innerText = this.bat.fours
+        row[3].innerText = `${this.bat.fours}/${this.bat.sixes}`
     }
 }
 
@@ -418,7 +421,7 @@ class Cricket {
         } else if(event != 'Re') {
 
             // Additional runs made in that ball
-            const runs = +await getPrompt('Additional runs made ?', [0, 1, 2, 3, 4])
+            const runs = +await getPrompt('Additional runs made ?', [0, 1, 2, 3, 4, 6])
 
             // Add ball and runs to bowler
             this.bowler.throwBall(event, runs)
@@ -614,7 +617,7 @@ function createTab(battingTeam, bowlingTeam) {
                 <th>Batter</th>
                 <th>R</th>
                 <th>B</th>
-                <th>4</th>
+                <th>4/6</th>
             </tr>`
     battingTeam.players.forEach(player => {
         tabContent += `
