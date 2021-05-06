@@ -752,7 +752,9 @@ function generateScoreBoard() {
   document.querySelectorAll("a.nav-link.fw-bolder").forEach((tab) => {
     tab.addEventListener("input", (event) => {
       const team = event.target.getAttribute("id").replace("-tab", "");
-      const name = event.target.textContent.trim() || team;
+      const name = event.target.textContent.trim()
+        ? event.target.textContent
+        : team;
       event.target.textContent = name;
       match[team].name = name;
     });
