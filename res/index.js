@@ -786,8 +786,8 @@ async function toss(firstBatting = null) {
   const lengthA = teamA.childElementCount;
   const lengthB = teamB.childElementCount;
 
-  if (!lengthA && !lengthB) {
-    alert("Add players to both teams to continue");
+  if (lengthA < 2 || lengthB < 2) {
+    alert("Add minimum 2 players to both teams to continue");
   } else {
     match = new Cricket(teamA, teamB); // Create the match
     match.toss(firstBatting); // Do the actual toss
