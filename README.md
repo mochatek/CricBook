@@ -11,11 +11,14 @@ View the live demo: [CricBook](https://mochatek.github.io/CricBook/)
 - Select total overs from the range element. (Default is 4 overs)
 
 - Do the toss. There are 3 options for the toss. Choose any one from the following:
-  * Let Team A to bat first `🏏 Team A`
-  * Let Team B to bat first `🏏 Team B`
-  * Let the system decide `🏏 Toss`
-  
+
+  - Let Team A to bat first `🏏 Team A`
+  - Let Team B to bat first `🏏 Team B`
+  - Let the system decide `🏏 Toss`
+
 - Once the toss is selected, we move into the scoreboard page.
+
+- You can change the team name by clicking the default name.
 
 - Once the innings begin, The system will ask for the opening batsmen and bowler. Select them.
 
@@ -39,9 +42,11 @@ View the live demo: [CricBook](https://mochatek.github.io/CricBook/)
 Just run the `index.html` in your browser.
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
 ## License
+
 [MIT](https://github.com/mochatek/CricBook/blob/master/LICENSE)
